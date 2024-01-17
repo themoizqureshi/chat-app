@@ -1,13 +1,21 @@
 "use client";
 import { Imessage, useMessage } from "@/lib/store/messages";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Message from "./Message";
 import { DeleteAlert, EditAlert } from "./MessageAction";
 import supabaseBrowser from "@/lib/supabase/browser";
 import { toast } from "sonner";
 
 const ListMessages = () => {
-  const { messages, addMessage, optimisticIds } = useMessage((state) => state);
+  const scrollRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+
+  const {
+    messages,
+    addMessage,
+    optimisticIds,
+    optimisticDeleteMessage,
+    optimisticUpdateMessage,
+  } = useMessage((state) => state);
   const supabase = supabaseBrowser();
 
   useEffect(() => {
@@ -38,6 +46,21 @@ const ListMessages = () => {
           }
         }
       )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "messages" },
+        (payload) => {
+          optimisticDeleteMessage(payload.old.id);
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "messages" },
+        (payload) => {
+          console.log("Change received!", payload);
+          optimisticUpdateMessage(payload.new as Imessage);
+        }
+      )
       .subscribe();
 
     return () => {
@@ -45,8 +68,18 @@ const ListMessages = () => {
     };
   }, [messages]);
 
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    }
+  }, [messages]);
+
   return (
-    <div className="flex-1 flex flex-col p-5 h-full overflow-y-auto">
+    <div
+      className="flex-1 flex flex-col p-5 h-full overflow-y-auto"
+      ref={scrollRef}
+    >
       <div className="flex-1"></div>
       <div className="space-y-7">
         {messages.map((value, index) => {
