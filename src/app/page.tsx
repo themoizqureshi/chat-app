@@ -14,7 +14,7 @@ async function Page() {
   return (
     <>
       <div className="max-w-3xl mx-auto md:py-10 h-screen">
-        <div className="h-full border rouded-md flex flex-col">
+        <div className="h-full border rouded-md flex flex-col relative">
           <ChatHeader user={data.session?.user} />
           <ChatMessages />
           <ChatInput />
