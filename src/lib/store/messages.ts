@@ -24,7 +24,7 @@ interface MessagesState {
     addMessage: (message: Imessage) => void;
     setActionMessage: (message: Imessage | undefined) => void;
     optimisticDeleteMessage: (messageId: string) => void;
-    optimisticUpdateMessage: (messageId: Imessage) => void;
+    optimisticUpdateMessage: (message: Imessage) => void;
     setOptimisticIds: (id: string) => void;
     setMessages: (messages: Imessage[]) => void;
 }
@@ -57,9 +57,9 @@ export const useMessage = create<MessagesState>()((set) => ({
                     message.text = updateMessage.text,
                         message.is_edit = updateMessage.is_edit
                 }
-                return message
-            })
-        }
+                return message;
+            }),
+        };
     }),
 
 })) 

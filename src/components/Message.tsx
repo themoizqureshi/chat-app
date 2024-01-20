@@ -26,7 +26,7 @@ const Message = ({ message }: { message: Imessage }) => {
         />
       </div>
       <div className="flex-1">
-        <div className="flex items-center gap-1 justify-between">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <h1 className="font-bold">{message.users?.display_name}</h1>
             <h1 className="text-sm text-gray-400">

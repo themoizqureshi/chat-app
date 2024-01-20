@@ -23,13 +23,13 @@ const LoadMoreMessages = () => {
     if (error) {
       toast.error(error.message);
     } else {
-      setMessages(data);
+      setMessages(data.reverse());
     }
   };
 
   if (hasMore) {
     return (
-      <Button variant={"outline"} className="w-full" onClick={fetchMore}>
+      <Button variant="outline" className="w-full" onClick={fetchMore}>
         Load More
       </Button>
     );

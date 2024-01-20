@@ -15,6 +15,7 @@ const ChatInput = () => {
 
   const handleSendMessage = async (text: string) => {
     if (text.trim()) {
+      const id = uuidv4();
       const newMessage = {
         id: uuidv4(),
         text,
@@ -30,7 +31,7 @@ const ChatInput = () => {
       };
       addMessage(newMessage as Imessage);
       setOptimisticIds(newMessage.id);
-      const { error } = await supabase.from("messages").insert({ text });
+      const { error } = await supabase.from("messages").insert({ text, id });
       if (error) {
         toast.error(error.message);
       }
