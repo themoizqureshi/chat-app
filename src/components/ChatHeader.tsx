@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import supabaseBrowser from "@/lib/supabase/browser";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+import ChatPresence from "./ChatPresence";
 
 export default function ChatHeader({ user }: { user: User | undefined }) {
   const router = useRouter();
@@ -28,6 +29,7 @@ export default function ChatHeader({ user }: { user: User | undefined }) {
       <div className="p-5 border-b flex items-center justify-between h-full">
         <div>
           <h1 className="text-xl font-bold">Chat App</h1>
+          <ChatPresence />
         </div>
         {user ? (
           <Button onClick={handleLogout}>Logout</Button>
